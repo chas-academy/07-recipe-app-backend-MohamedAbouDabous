@@ -1,13 +1,12 @@
 <?php
-// use Illuminate\Http\Request;
+
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
-],
-function ($router) {
+
+], function ($router) {
     Route::post('login', 'HomeAuthController@login');
+    Route::post('signup', 'HomeAuthController@signup');
     Route::post('logout', 'HomeAuthController@logout');
     Route::post('refresh', 'HomeAuthController@refresh');
-    Route::post('home', 'HomeAuthController@home');
+    Route::post('authUser', 'HomeController@authUser');
 });
-Route::resource('recipes', 'RecipeController');

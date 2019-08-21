@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Http\Requests\Querys;
 
 class HomeAuthController extends Controller
 {
@@ -37,7 +40,7 @@ class HomeAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function authUser()
     {
         return response()->json($this->guard()->user());
     }
