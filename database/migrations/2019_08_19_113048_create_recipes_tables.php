@@ -13,11 +13,18 @@ class CreateRecipesTables extends Migration
      */
     public function up()
     {
-        Schema::create('recipes_tables', function (Blueprint $table) {
+        Schema::create('recipes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->Integer('user_id');
+            $table->string('edamam_id', 32);
+            $table->json('json_data');
             $table->timestamps();
+            $table->unique(['user_id', 'edamam_id']);
+            // dd($table);
         });
     }
+
+    // dd($table);
 
     /**
      * Reverse the migrations.
