@@ -5,9 +5,9 @@ Route::group([
     'prefix' => 'auth'
 ],
 function ($router) {
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('home', 'AuthController@home');
+    Route::post('login', 'HomeAuthController@login');
+    Route::post('logout', 'HomeAuthController@logout');
+    Route::post('refresh', 'HomeAuthController@refresh');
+    Route::post('home', 'HomeAuthController@home');
 });
 Route::resource('recipes', 'RecipeController');
