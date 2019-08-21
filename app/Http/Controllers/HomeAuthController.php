@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeAuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
+     * 
      *
      * @return void
      */
@@ -18,7 +18,7 @@ class HomeAuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
     /**
-     * Get a JWT token via given credentials.
+     * Getting a jwt token.
      *
      * @param  \Illuminate\Http\Request  $request
      *
@@ -42,7 +42,7 @@ class HomeAuthController extends Controller
         return response()->json($this->guard()->user());
     }
     /**
-     * Log the user out (Invalidate the token)
+     * Log the user out
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -52,7 +52,7 @@ class HomeAuthController extends Controller
         return response()->json(['message' => 'Now Logged out!']);
     }
     /**
-     * Refresh a token.
+     * 
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -61,7 +61,7 @@ class HomeAuthController extends Controller
         return $this->respondWithToken($this->guard()->refresh());
     }
     /**
-     * Get the token array structure.
+     * Get the god damn structrue array going
      *
      * @param  string $token
      *
@@ -72,12 +72,11 @@ class HomeAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-
             'expires_in' => $this->guard()->factory()->getTTL() * 60
         ]);
     }
     /**
-     * Get the guard to be used during authentication.
+     * Use the guard during auth
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
