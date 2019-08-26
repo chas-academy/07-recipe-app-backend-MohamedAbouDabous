@@ -8,5 +8,6 @@ Route::group([
     Route::post('signup', 'HomeAuthController@signup');
     Route::post('logout', 'HomeAuthController@logout');
     Route::post('refresh', 'HomeAuthController@refresh');
-    Route::post('authUser', 'HomeController@authUser');
+    Route::post('me', 'HomeAuthController@me');
+
 });

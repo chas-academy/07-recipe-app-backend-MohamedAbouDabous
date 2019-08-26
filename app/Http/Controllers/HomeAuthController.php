@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Http\Requests\Querys;
+use App\Http\Query\RegisterReq;
 
 class HomeAuthController extends Controller
 {
@@ -18,7 +18,13 @@ class HomeAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
+    }
+
+    public function signup(RegisterReq $request)
+    {
+        User::create($request->all());
+        return $this->login($request);
     }
     /**
      * Getting a jwt token.
@@ -40,7 +46,7 @@ class HomeAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function authUser()
+    public function me()
     {
         return response()->json($this->guard()->user());
     }
@@ -52,7 +58,8 @@ class HomeAuthController extends Controller
     public function logout()
     {
         $this->guard()->logout();
-        return response()->json(['message' => 'Now Logged out!']);
+
+        return response()->json(['message' => 'Bye Bye you are now logged out!']);
     }
     /**
      * 
@@ -75,7 +82,8 @@ class HomeAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()->name
         ]);
     }
     /**

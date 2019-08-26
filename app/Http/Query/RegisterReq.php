@@ -1,7 +1,8 @@
 <?php
-namespace App\Http\Querys;
+namespace App\Http\Query;
 use Illuminate\Foundation\Http\FormRequest;
-class SignUpRequest extends FormRequest
+
+class RegisterReq extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

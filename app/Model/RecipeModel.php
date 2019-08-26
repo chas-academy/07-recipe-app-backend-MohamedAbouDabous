@@ -1,11 +1,11 @@
     
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Recipes extends Model
+class RecipeModel extends Model
 {
     protected $fillable = [
         'email',

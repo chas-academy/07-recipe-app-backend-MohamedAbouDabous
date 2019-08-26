@@ -1,28 +1,44 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-
+use App\Recipe;
+use Illuminate\Http\Query;
+use App\Http\Resources\RecipeResource;
+use JWTAuth;
 class RecipeController extends Controller
 {
+    private $currentUser;
+    public function __construct()
+    {
+        $this->currentUser = JWTAuth::parseToken()->authenticate();
+    }
     /**
-     * Show it all
+     *
+     *
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return Recipe::take(20)->get();
+        //
     }
     /**
-     * Showing the form
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
+        //
+    }
+    public function getSavedRecipes()
+    {
+        $recipes = $this->currentUser->recipes()->get();
+        return compact('recipes');
+        // return RecipeResource::collection(Recipe::all());
     }
     /**
-     * Store the created
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -30,30 +46,55 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $recipe = new Recipe();
-        $recipe->user_id = '1';
-        $recipe->edamam_id = $request->input('id');
-        $recipe->json_data = json_encode($request->all());
-        $recipe->save();
-        return ([]);
+        $recipe->title = $request->get('title');
+        $recipe->description = $request->get('description');
+    
+        $this->currentUser->recipes()->save($recipe);
+        // $recipe = Recipe::create([
+        //     'title' => $request->get('title'),
+        //     'description' => $request->get('description'),
+        // ]);
+        // return new RecipeResource($recipe);
     }
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Recipe $recipe)
     {
-        return Recipe::where('id', $id)->first();
+        //
     }
     /**
-     * Here you'll delete it!
+     * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Recipe  $recipe
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function edit(Recipe $recipe)
     {
-        return Recipe::where('id', $id)->delete();
+        //
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Recipe  $recipe
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Recipe $recipe)
+    {
+        //
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Recipe  $recipe
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Recipe $recipe, Request $request)
+    {
+        Recipe::where('id', $request->id)->delete();
     }
 }
