@@ -1,100 +1,43 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Recipe;
-use Illuminate\Http\Query;
 use App\Http\Resources\RecipeResource;
-use JWTAuth;
+
 class RecipeController extends Controller
 {
-    private $currentUser;
     public function __construct()
     {
-        $this->currentUser = JWTAuth::parseToken()->authenticate();
-    }
-    /**
-     *
-     *
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $this->middleware('auth:api')->except(
+            [
+                'store', 'getSavedRecipes', 'destroy'
+            ]
+        );
     }
     public function getSavedRecipes()
     {
-        $recipes = $this->currentUser->recipes()->get();
-        return compact('recipes');
-        // return RecipeResource::collection(Recipe::all());
+        return RecipeResource::collection(Recipe::all());
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        $recipe = new Recipe();
-        $recipe->title = $request->get('title');
-        $recipe->description = $request->get('description');
-    
-        $this->currentUser->recipes()->save($recipe);
-        // $recipe = Recipe::create([
-        //     'title' => $request->get('title'),
-        //     'description' => $request->get('description'),
-        // ]);
-        // return new RecipeResource($recipe);
+        $recipe = Recipe::create(
+            [
+                'email' => $request->email,
+                'label' => $request->label,
+                'image' => $request->image,
+                'ingredientLines' => $request->ingredientLines 
+            ]
+        );
+        return new RecipeResource($recipe);
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Recipe $recipe)
+    public function updateRecipe(Request $request)
     {
-        //
+        Recipe::where('id', $request->id)->update($request->all());
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Recipe $recipe)
-    {
-        //
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Recipe $recipe)
-    {
-        //
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Recipe  $recipe
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Recipe $recipe, Request $request)
+    public function destroy(Request $request)
     {
         Recipe::where('id', $request->id)->delete();
+        return RecipeResource::collection(Recipe::all());
     }
 }

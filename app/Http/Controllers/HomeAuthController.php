@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Http\Query\RegisterReq;
+use App\Http\Requests\RegisterReq;
 
 class HomeAuthController extends Controller
 {
@@ -18,10 +18,10 @@ class HomeAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function signup(RegisterReq $request)
+    public function register(RegisterReq $request)
     {
         User::create($request->all());
         return $this->login($request);
@@ -39,14 +39,14 @@ class HomeAuthController extends Controller
         if ($token = $this->guard()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['error' => 'Unauthorized no email or Password'], 401);
     }
     /**
      * Get the authenticated User
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function me()
+    public function user()
     {
         return response()->json($this->guard()->user());
     }
@@ -67,9 +67,7 @@ class HomeAuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh()
-    {
-        return $this->respondWithToken($this->guard()->refresh());
-    }
+    {}
     /**
      * Get the god damn structrue array going
      *

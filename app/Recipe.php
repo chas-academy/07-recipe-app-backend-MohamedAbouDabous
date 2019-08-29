@@ -1,19 +1,16 @@
-    
 <?php
 
-namespace App\Model;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RecipeModel extends Model
+class Recipe extends Model
 {
     protected $fillable = [
         'email',
         'label',
         'image',
-        'calories',
-        'healthLabels',
-        'ingredientLines',
+        'ingredientLines'
     ];
     public function user()
     {

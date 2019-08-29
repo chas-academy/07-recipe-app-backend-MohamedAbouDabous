@@ -14,12 +14,12 @@ class CreateRecipesTables extends Migration
     public function up()
     {
         Schema::create('recipes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->Integer('user_id');
-            $table->string('edamam_id', 32);
-            $table->json('json_data');
+            $table->increments('id');
+            $table->string('email');
+            $table->string('label');
+            $table->string('image');
+            $table->longText('ingredientLines');
             $table->timestamps();
-            $table->unique(['user_id', 'edamam_id']);
             // dd($table);
         });
     }
