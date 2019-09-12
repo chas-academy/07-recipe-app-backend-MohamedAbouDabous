@@ -1,1 +1,2 @@
-http://recipe.mohamedaboudabous.chas.academy
+Frontend: http://recipe.mohamedaboudabous.chas.academy
+Backend: https://hellorecipeapp.herokuapp.com
